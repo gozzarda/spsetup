@@ -6,9 +6,10 @@
 ./disable_firewall.sh
 # User default stuff
 ./firefox.sh
-./example_content.sh
 # Install all desired packages
 ./packages.sh
+# Printers DELETE THIS IF YOU DON'T HAVE A PRINTER
+./printers.sh
 # Network setup
 ./hosts.sh
 ./enable_firewall.sh

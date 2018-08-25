@@ -16,6 +16,6 @@ DEBIAN_FRONTEND=noninteractive apt-get -y install iptables-persistent
 # Official Compiler Versions
 apt-get -y install gcc-6=6.3.0-18+deb9u1
 apt-get -y install openjdk-8-jdk=8u181-b13-1~deb9u1 openjdk-8-jre=8u181-b13-1~deb9u1
-apt-get -y python3.5=3.5.3-1
+apt-get -y install python3.5=3.5.3-1
 # Finalise package list
 apt-get -y autoremove && apt-get -y autoclean

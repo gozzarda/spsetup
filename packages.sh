@@ -6,8 +6,9 @@ apt-get -y install apt-transport-https
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | tee /etc/apt/sources.list.d/sublime-text.list
 # Set up minimal-ish gnome with lightdm
-apt-get -y install gnome-core lightdm
+apt-get -y install gnome-core
 apt-get -y purge gdm3
+apt-get -y install lightdm
 # Install packages
 apt-get update && apt-get -y upgrade
 apt-get -y install build-essential vim-gtk emacs sublime-text idle-python3.5 eclipse eclipse-cdt-valgrind gedit-developer-plugins gedit-plugins anjuta-extras geany-plugins clang-4.0

@@ -8,6 +8,5 @@ fi
 cp -a /etc/hosts /etc/hosts.bak
 
 cat << EOF_HOSTS >> /etc/hosts
-132.181.7.114	domserver.cosc.canterbury.ac.nz
-60.241.98.115	60-241-98-115.static.tpgi.com.au
+192.254.188.84	contest.sppregional.org
 EOF_HOSTS

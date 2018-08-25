@@ -9,8 +9,9 @@ passwd $user << EOF_PASSWD
 $pass
 $pass
 EOF_PASSWD
-cat << EOF_LIGHTDM > /etc/lightdm/lightdm.conf
-[Seat:*]
-autologin-user=$user
+cat << EOF_LIGHTDM > /etc/gdm3/daemon.conf
+[daemon]
+AutomaticLoginEnable=True
+AutomaticLogin=$user
 EOF_LIGHTDM
 fi

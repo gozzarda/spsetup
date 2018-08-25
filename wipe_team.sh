@@ -13,5 +13,5 @@ fi
 find / -user $user -exec rm -rf {} \;
 deluser --remove-home $user
 delgroup $user
-rm -f /etc/lightdm/lightdm.conf
+rm -f /etc/gdm3/daemon.conf
 fi

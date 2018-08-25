@@ -10,7 +10,7 @@ echo "deb https://download.sublimetext.com/ apt/stable/" | tee /etc/apt/sources.
 apt-get -y install gnome-core
 # Install packages
 apt-get update && apt-get -y upgrade
-apt-get -y install build-essential vim-gtk emacs sublime-text idle-python3.5 eclipse eclipse-cdt-valgrind gedit-developer-plugins gedit-plugins anjuta-extras geany-plugins clang-4.0
+apt-get -y install build-essential vim-gtk emacs sublime-text idle-python3.5 eclipse eclipse-cdt-valgrind gedit-plugins anjuta-extras geany-plugins clang-4.0
 # Prevent iptables-persistent interactive setup
 DEBIAN_FRONTEND=noninteractive apt-get -y install iptables-persistent
 # Official Compiler Versions

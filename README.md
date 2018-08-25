@@ -14,7 +14,7 @@ Running Commands
 `sudo spsetup`
 You will be presented with a menu with 5 option:
 1. Perform first time setup
-    - Does everything required to convert a stock Ubuntu 16.04 installation into a contest setup
+    - Does everything required to convert a stock headless Debian 9.5 installation into a contest setup
     - Used for building images, should not need to be run if you received this setup as a preconfigured image
 2. Archive and reset team user
     - Archives the team user's home directory in `/usr/share/spsetup/teamarchives`

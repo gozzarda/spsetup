@@ -9,7 +9,7 @@ passwd $user << EOF_PASSWD
 $pass
 $pass
 EOF_PASSWD
-cat << EOF_LIGHTDM > /etc/gdm/custom.conf
+cat << EOF_LIGHTDM > /etc/gdm3/daemon.conf
 [daemon]
 AutomaticLoginEnable=True
 AutomaticLogin=$user

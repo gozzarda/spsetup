@@ -4,10 +4,10 @@
 ./wipe_team.sh
 # Disable the firewall to allow packages, etc
 ./disable_firewall.sh
-# User default stuff
-./firefox.sh
 # Install all desired packages
 ./packages.sh
+# User default stuff
+./firefox.sh
 # Printers DELETE THIS IF YOU DON'T HAVE A PRINTER
 ./printers.sh
 # Network setup

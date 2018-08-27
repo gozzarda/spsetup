@@ -8,8 +8,8 @@
 ./packages.sh
 # User default stuff
 ./firefox.sh
-# Printers DELETE THIS IF YOU DON'T HAVE A PRINTER
-./printers.sh
+# Printers EDIT AND UNCOMMENT IF YOU HAVE A PRINTER SETUP
+# ./printers.sh
 # Network setup
 ./hosts.sh
 ./enable_firewall.sh

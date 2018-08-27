@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Setup printers
+apt-get -y install cups
 # THIS IS A TEST CONFIGURATION FILE FOR PRINTING AT UWA
 # PLEASE MODIFY THIS
 # PLACE THE PRINTER'S PPD IN /etc/cups/ppd/ IF NECESSARY

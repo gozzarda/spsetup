@@ -1,17 +1,18 @@
 SP Setup Scripts
 ================
 
-Do not run these scripts on a machine you don't intend to turn into a contest image.
-All scripts can be run with sudo, most have to be.
+Do not run these scripts on a machine you don't intend to turn into a contest image.  
+All scripts can be run as root, most have to be.
 
 Installation
 ------------
-`sudo ./install.sh`
+`sudo ./install.sh`  
 This will install all scripts to `/usr/share/spsetup/` and make a symlink from `/usr/bin/spsetup` to `spsetup.sh`
 
 Running Commands
 ----------------
-`sudo spsetup`
+As root:  
+`spsetup`  
 You will be presented with a menu with 5 option:
 1. Perform first time setup
     - Does everything required to convert a stock headless Debian 9.5 installation into a contest setup

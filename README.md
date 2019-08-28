@@ -29,3 +29,16 @@ You will be presented with a menu with 5 option:
     - Disables the firewall for admin use
 6. Quit
     - Exits the script
+
+Image Handling
+--------------
+To create a bootable USB drive of this image, simply clone it to the drive using either
+
+- `dd if=contestant.img of=/path/to/drive` (may leave dead space on drive), or
+- `virt-resize --expand /dev/sda1 contestant.img /path/to/drive` (will expand image to fill drive)
+
+where `/path/to/drive` is the path to the drive you want to write the image to.
+
+Note: `virt-resize` is available in the `libguestfs-tools` package.
+
+Alternative setups such as a virtual machine are possible, but platform dependent, so instructions are not included here.

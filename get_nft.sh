@@ -2,5 +2,5 @@
 
 # Install and enable nftables
 apt-get update
-apt-get install nftables
+apt-get -y install nftables
 systemctl enable nftables.service

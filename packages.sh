@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Update package list
+apt-get update
 # Add repositories
 # Sublime Text
 apt-get -y install apt-transport-https

@@ -4,7 +4,7 @@
 apt-get update
 # Add repositories
 # Sublime Text
-apt-get -y install apt-transport-https
+apt-get -y install apt-transport-https gnupg
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | tee /etc/apt/sources.list.d/sublime-text.list
 # Set up minimal-ish gnome

@@ -14,6 +14,7 @@ iptables -A OUTPUT -d 192.254.188.84/32 -p tcp -m tcp --dport 80 -j ACCEPT
 iptables -A OUTPUT -d 167.99.29.149/32 -p tcp -m tcp --dport 80 -j ACCEPT
 # Backup DOMjudge
 iptables -A OUTPUT -d 174.138.121.10/32 -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -A OUTPUT -d 159.89.208.8/32 -p tcp -m tcp --dport 80 -j ACCEPT
 iptables-save > /etc/iptables/rules.v4
 
 ip6tables -F

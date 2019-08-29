@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Setup printers
+apt-get update
 apt-get -y install cups
 # THIS IS A TEST CONFIGURATION FILE FOR PRINTING AT UWA
 # PLEASE MODIFY THIS

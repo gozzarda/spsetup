@@ -8,10 +8,10 @@ apt-get -y install software-properties-common apt-transport-https gnupg
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | tee /etc/apt/sources.list.d/sublime-text.list
 # Atom
-wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add -
 echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list
 # VS Code
-curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+wget -qO - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
 # Install packages
 apt-get update && apt-get -y upgrade

@@ -41,4 +41,6 @@ where `/path/to/drive` is the path to the drive you want to write the image to.
 
 Note: `virt-resize` is available in the `libguestfs-tools` package.
 
+The image can be converted to different formats using `qemu-img convert` as detailed [here](https://docs.openstack.org/image-guide/convert-images.html). For example, `qemu-img convert -f raw -O vmdk contestant.img contestant.vmdk` will convert the image to VMDK format.
+
 Alternative setups such as a virtual machine are possible, but platform dependent, so instructions are not included here.

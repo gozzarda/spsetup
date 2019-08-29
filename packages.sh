@@ -3,15 +3,22 @@
 # Update package list
 apt-get update
 # Add repositories
+apt-get -y install software-properties-common apt-transport-https gnupg
 # Sublime Text
-apt-get -y install apt-transport-https gnupg
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | tee /etc/apt/sources.list.d/sublime-text.list
-# Set up minimal-ish gnome
-apt-get -y install gnome-core
+# Atom
+wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list
+# VS Code
+curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
 # Install packages
 apt-get update && apt-get -y upgrade
-apt-get -y install build-essential vim-gtk emacs sublime-text idle-python3.7 gedit-plugins anjuta-extras geany-plugins
+# Set up minimal-ish gnome
+apt-get -y install gnome-core
+# Editors and such
+apt-get -y install build-essential vim-gtk emacs sublime-text atom code idle-python3.7 gedit-plugins anjuta-extras geany-plugins
 # Extra Compilers
 apt-get -y install clang
 # Official Compiler Versions

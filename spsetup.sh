@@ -15,6 +15,7 @@ do
 		"${opts[0]}" )
 			./setup.sh
 			echo "SETUP COMPLETE"
+			echo "You probably want to enable the firewall now."
 			break;
 			;;
 		"${opts[1]}" )

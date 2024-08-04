@@ -8,5 +8,6 @@ fi
 cp -a /etc/hosts /etc/hosts.bak
 
 cat << EOF_HOSTS >> /etc/hosts
-192.254.188.84	contest.sppregional.org
+170.64.169.12   sppcontests.org
+170.64.253.143	contest.sppcontests.org
 EOF_HOSTS

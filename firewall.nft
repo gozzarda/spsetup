@@ -1,22 +1,48 @@
+#! /usr/sbin/nft -f
+
+flush ruleset
+
 # Block all internet traffic except the contest servers
-add table ip filter
-add chain ip filter INPUT { type filter hook input priority 0; policy drop; }
-add chain ip filter FORWARD { type filter hook forward priority 0; policy accept; }
-add chain ip filter OUTPUT { type filter hook output priority 0; policy drop; }
-add rule ip filter INPUT iifname "lo" counter accept
-add rule ip filter INPUT ct state related,established counter accept
-add rule ip filter OUTPUT oifname "lo" counter accept
-# sppcontests.org
-add rule ip filter OUTPUT ip daddr 170.64.169.12 tcp dport 80 counter accept
-# contest.sppcontests.org
-add rule ip filter OUTPUT ip daddr 170.64.253.143 tcp dport 80 counter accept
-# Backup DOMJudge TBD
-# add rule ip filter OUTPUT ip daddr 174.138.121.10 tcp dport 80 counter accept
-# add rule ip filter OUTPUT ip daddr 159.89.208.8 tcp dport 80 counter accept
+table ip filter {
+    chain INPUT {
+        # Drop everything by default
+        type filter hook input priority filter; policy drop;
+        
+        # Allow loopback
+        iifname "lo" counter accept
+        
+        # Allow established/related connections
+        ct state {established, related} counter accept
+        
+        # Allow icmp
+        ip protocol icmp accept
+    }
 
-# Drop all IPV6 traffic
-add table ip6 filter
-add chain ip6 filter INPUT { type filter hook input priority 0; policy drop; }
-add chain ip6 filter FORWARD { type filter hook forward priority 0; policy drop; }
-add chain ip6 filter OUTPUT { type filter hook output priority 0; policy drop; }
+    chain FORWARD {
+        type filter hook forward priority filter; policy accept;
+    }
 
+    chain OUTPUT {
+        type filter hook output priority filter; policy drop;
+        oifname "lo" counter accept
+        # sppcontests.org
+        ip daddr 170.64.169.12 tcp dport {http, https} counter accept
+        # contest.sppcontests.org
+        ip daddr 170.64.253.143 tcp dport {http, https} counter accept
+    }
+}
+
+# Drop all IPv6 traffic
+table ip6 filter {
+    chain INPUT {
+        type filter hook input priority filter; policy drop;
+    }
+
+    chain FORWARD {
+        type filter hook forward priority filter; policy drop;
+    }
+
+    chain OUTPUT {
+        type filter hook output priority filter; policy drop;
+    }
+}

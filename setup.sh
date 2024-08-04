@@ -12,6 +12,5 @@
 # ./printers.sh
 # Network setup
 ./hosts.sh
-./enable_firewall.sh
 # Create fresh team user
 ./make_team.sh

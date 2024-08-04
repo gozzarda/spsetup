@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Prevent prompts about restarting services
-DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
 
 # Update package list
 apt-get update

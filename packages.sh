@@ -31,10 +31,10 @@ apt-get -y install chromium-browser gnome-core
 # Firefox
 apt-get -y install firefox
 # Editors and such
-apt-get -y install build-essential neovim vim-gtk emacs sublime-text code idle-python3.11 gedit-plugins geany-plugins
+apt-get -y install build-essential neovim vim-gtk3 emacs sublime-text code idle-python3.12 gedit-plugins geany-plugins
 # Extra Compilers
 apt-get -y install clang
-# Official Compiler Versions (Ubuntu 22.04 defaults)
+# (NOT) Official Compiler Versions (should be Ubuntu 22.04 defaults but not available)
 apt-get -y install gcc g++
 apt-get -y install openjdk-11-jdk openjdk-11-jre
 apt-get -y install pypy3

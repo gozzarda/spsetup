@@ -19,19 +19,27 @@ table ip filter {
     }
 
     chain FORWARD {
+    	# Drop everything by default
         type filter hook forward priority filter; policy accept;
     }
 
     chain OUTPUT {
+    	# Drop everything by default
         type filter hook output priority filter; policy drop;
-        oifname "lo" counter accept
-        # sppcontests.org
+        
+	# Allow loopback
+	oifname "lo" counter accept
+        
+	# sppcontests.org
         ip daddr 170.64.169.12 tcp dport {http, https} counter accept
-        # contest.sppcontests.org
+        
+	# contest.sppcontests.org
         ip daddr 170.64.253.143 tcp dport {http, https} counter accept
+	
 	# Allow DNS
 	tcp dport 53 accept comment "accept DNS"
 	udp dport 53 accept comment "accept DNS"
+	
 	# Allow NTP
 	tcp dport 123 accept comment "accept NTP"
 	udp dport 123 accept comment "accept NTP"

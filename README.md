@@ -15,7 +15,7 @@ As root:
 `spsetup`  
 You will be presented with a menu with 5 option:
 1. Perform first time setup
-    - Does everything required to convert a stock Ubuntu Server 22.04 installation into a contest setup
+    - Does everything required to convert a stock Ubuntu Server 24.04 installation into a contest setup
     - Used for building images, should not need to be run if you received this setup as a preconfigured image
 2. Archive and reset team user
     - Archives the team user's home directory in `/usr/share/spsetup/teamarchives`

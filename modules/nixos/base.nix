@@ -166,18 +166,19 @@
     emacs
     sublime4
     vscode
-    python3Full # includes idle
     gedit
     geany
 
-    clang
-    gcc # TODO: which version?
-    zulu11
+    python311Full # includes idle
+    zulu17
     pypy3
+
+    # this order means `cc` is gcc
+    gcc12
+    clang
   ];
 
   services.nixseparatedebuginfod.enable = true;
 
   programs.git.enable = true;
-
 }

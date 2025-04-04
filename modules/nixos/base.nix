@@ -33,10 +33,7 @@
   # Opt out of `useradd`.
   users.mutableUsers = false;
 
-  security.sudo = {
-    execWheelOnly = true;
-    extraConfig = "Defaults lecture = never";
-  };
+  security.sudo.extraConfig = "Defaults lecture = never";
 
   users.users = {
     root = {

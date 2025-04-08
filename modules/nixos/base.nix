@@ -113,7 +113,7 @@
   };
 
   # desktop environment
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.displayManager.autoLogin = {
     enable = true;

@@ -33,7 +33,10 @@
   # Opt out of `useradd`.
   users.mutableUsers = false;
 
-  security.sudo.extraConfig = "Defaults lecture = never";
+  security.sudo = {
+    wheelNeedsPassword = false;
+    extraConfig = "Defaults lecture = never";
+  };
 
   users.users = {
     root = {
@@ -59,7 +62,8 @@
     };
   };
 
-  time.timeZone = "Australia/Perth"; # TODO
+  time.timeZone = "Australia/Perth"; # TODO: is this correct?
+  # services.automatic-timezoned.enable = true;
 
   # Some basic good defaults:
   boot.initrd.systemd.enable = true;
@@ -113,13 +117,13 @@
   };
 
   # desktop environment
+  services.xserver.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.displayManager.autoLogin = {
     enable = true;
     user = "team";
   };
-  services.libinput.enable = true;
   services.printing.enable = true;
 
   hardware.pulseaudio.enable = false;
@@ -149,6 +153,12 @@
   };
 
   environment.systemPackages = with pkgs; [
+    (writeShellApplication {
+      name = "spsetup";
+      runtimeInputs = [ fzy ];
+      text = builtins.readFile ../../spsetup.sh;
+    })
+
     hyperfine
     man-pages
     p7zip

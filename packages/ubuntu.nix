@@ -9,15 +9,15 @@ let
 
   aptPackages = [
     "build-essential"
-    "gcc"
-    "g++"
+    "gcc-12"
+    "g++-12"
     "python3"
     "openjdk-17-jdk"
     "openjdk-17-jre"
     "pypy3"
   ];
   aptExtraRepos = [ "universe" ];
-  aptHash = "sha256-wqLXdz0xigA1nMu0S3e6M4dYkqUxLI8EZs6auh3Z1Ks=";
+  aptHash = "sha256-RXTCveNEzC0zXnNyVS/i67v3l/aNGtyfpJL4WhESmls=";
 
   debootstrap = pkgs.debootstrap.overrideAttrs {
     postInstall = ''
@@ -79,7 +79,7 @@ let
   rootfs = pkgs.vmTools.runInLinuxVM (
     pkgs.runCommand "ubuntu-rootfs"
       {
-        memSize = 4 * 1024;
+        memSize = 8 * 1024;
         nativeBuildInputs = [ pkgs.util-linux ];
       }
       ''

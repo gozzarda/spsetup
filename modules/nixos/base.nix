@@ -121,7 +121,7 @@
   # desktop environment
   services.xserver.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
   services.displayManager.autoLogin = {
     enable = true;
     user = "team";
@@ -147,11 +147,6 @@
         Locked = true;
       };
     };
-  };
-
-  programs.chromium = {
-    enable = true;
-    homepageLocation = "http://contest.sppcontests.org";
   };
 
   environment.systemPackages =

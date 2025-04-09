@@ -76,18 +76,19 @@
   boot.kernelParams = [ "console=tty0" ];
   hardware.graphics.enable = true;
 
-  nix.settings = {
-    trusted-users = [ "@wheel" ];
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+  nix.enable = false;
+  # nix.settings = {
+  #   trusted-users = [ "@wheel" ];
+  #   experimental-features = [
+  #     "nix-command"
+  #     "flakes"
+  #   ];
 
-    # auto gc when there's less than 100MiB available
-    # freeing up to 1GiB of space.
-    min-free = 100 * 1024 * 1024;
-    max-free = 1024 * 1024 * 1024;
-  };
+  #   # auto gc when there's less than 100MiB available
+  #   # freeing up to 1GiB of space.
+  #   min-free = 100 * 1024 * 1024;
+  #   max-free = 1024 * 1024 * 1024;
+  # };
 
   # Networking things:
   networking.hostName = "spcp";

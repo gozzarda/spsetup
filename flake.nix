@@ -16,6 +16,11 @@
     };
   };
 
+  nixConfig = {
+    extra-substituters = "https://nix.tombl.net/spsetup";
+    extra-trusted-public-keys = "spsetup:lQUkW1jLuCJ4870w/AWfLjV7bYB1T9A/rtSlF1vU2V8=";
+  };
+
   outputs =
     inputs:
     inputs.blueprint {

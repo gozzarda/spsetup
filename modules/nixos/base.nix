@@ -1,7 +1,9 @@
+{ flake, ... }:
+
 {
   pkgs,
-  lib,
   modulesPath,
+  lib,
   ...
 }:
 
@@ -152,38 +154,48 @@
     homepageLocation = "http://contest.sppcontests.org";
   };
 
-  environment.systemPackages = with pkgs; [
-    (writeShellApplication {
-      name = "spsetup";
-      runtimeInputs = [ fzy ];
-      text = builtins.readFile ../../spsetup.sh;
-    })
+  environment.systemPackages =
+    let
+      ubuntu = flake.packages.${pkgs.system}.ubuntu;
+    in
+    with pkgs;
+    [
+      (writeShellApplication {
+        name = "spsetup";
+        runtimeInputs = [ fzy ];
+        text = builtins.readFile ../../spsetup.sh;
+      })
 
-    hyperfine
-    man-pages
-    p7zip
-    sysstat
-    zip
-    htop
-    btop
-    wget
+      hyperfine
+      man-pages
+      p7zip
+      sysstat
+      zip
+      htop
+      btop
+      wget
 
-    neovim
-    vim
-    emacs
-    sublime4
-    vscode
-    gedit
-    geany
+      ubuntu
+      (ubuntu.provide "gcc")
+      (ubuntu.provide "g++")
+      (ubuntu.provide "cc")
+      (ubuntu.provide "c++")
+      (ubuntu.provide "javac")
+      (ubuntu.provide "java")
+      (ubuntu.provide "python3")
+      (ubuntu.provide "pypy3")
 
-    python311Full # includes idle
-    zulu17
-    pypy3
+      neovim
+      vim
+      emacs
+      sublime4
+      vscode
+      gedit
+      geany
+      (pkgs.lowPrio python311Full) # includes idle, lower priority so ubuntu python takes precedence
+    ];
 
-    # this order means `cc` is gcc
-    gcc12
-    clang
-  ];
+  environment.ldso = flake.packages.${pkgs.system}.ubuntu.ldso;
 
   services.nixseparatedebuginfod.enable = true;
 

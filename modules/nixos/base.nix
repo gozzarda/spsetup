@@ -72,7 +72,6 @@
   boot.tmp.useTmpfs = true;
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12; # latest lts
   zramSwap.enable = true;
-  # programs.nix-ld.enable = true; # TODO: enable if running arbitrary binaries is necessary.
   boot.kernelParams = [ "console=tty0" ];
   hardware.graphics.enable = true;
 

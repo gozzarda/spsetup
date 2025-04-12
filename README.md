@@ -1,28 +1,25 @@
 ## TODO
 
-- [ ] match compiler versions exactly to https://sppcontests.org/contest/,
+- [x] match compiler versions exactly to https://sppcontests.org/contest/,
     - should be able to find the correct nixpkgs hash https://nixhub.io
-- [ ] admin script
-    - re-execs with `su admin` if not admin
-    - re-execs with `host-spawn` if inside distrobox container
+    - actually just the major version is fine
+- [x] admin script
+    - requires running as admin, will re-exec with sudo if required
     - provide the ability to toggle the firewall
         - `sudo nft flush ruleset` to disable
         - `sudo systemctl restart nftables` to re-enable
     - provide the ability to archive the team's home directory, tagged with an optional label
     - provide the ability to restore arbitrary home directories
-- [ ] distrobox ubuntu based userspace
-    - install languages/editors in the image
-    - preload into nixos image via `pkgs.dockerTools.pullImage`
-    - push to ghcr on this repo, with Dockerfile in this repo
-        - this means we can have a single golden docker image, frozen at a specific point in time.
-    - put `distrobox enter ubuntu` into team's bash init
-- [ ] user archival script
+- [x] chroot ubuntu based userspace
+    - install languages in the image
+    - preload into nixos image
+- [x] user archival script
     - asks for confirmation if team is currently logged in
-    - re-execs with `su admin` if not admin, and runs via systemd-run so the next step won't kill this script.
     - kills all processes running under team
-    - archives `/home/team` under `/var/spool/sparchive/$(date -u +"%Y-%m-%dT%H:%M:%SZ").tar.gz`, owned by admin
+      - do this last so it doesn't interfere with the archi al
+    - archives `/home/team` under `/var/spool/spsetup/$(date -u +"%Y-%m-%dT%H:%M:%SZ").tar.gz`, owned by admin
     - deletes `/home/team`
-- [ ] detailed build instructions
+- [ ] detailed build/update instructions
 - [ ] automatic builds in ci
 - [ ] raspberry pi images
 - [ ] followup on TODOS in source

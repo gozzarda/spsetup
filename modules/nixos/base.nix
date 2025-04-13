@@ -42,8 +42,7 @@
 
   users.users = {
     root = {
-      # hashedPassword = ""; # TODO: gen via `mkpasswd`
-      password = "admin";
+      hashedPassword = "$y$j9T$s66mNSUxB3hgkFT07I3r5/$ke1ga.qcfuAxTtOlY24vnR5NPkNESOIqKgUO2Rt7YxB";
     };
 
     team = {
@@ -53,8 +52,7 @@
     };
 
     admin = {
-      # hashedPassword = ""; # TODO: gen via `mkpasswd`
-      password = "admin";
+      hashedPassword = "$y$j9T$s66mNSUxB3hgkFT07I3r5/$ke1ga.qcfuAxTtOlY24vnR5NPkNESOIqKgUO2Rt7YxB";
       extraGroups = [
         "wheel"
         "networkmanager"

@@ -3,152 +3,95 @@
 let
   inherit (pkgs) lib;
 
-  release = "noble"; # 24.04
-  mirror = "http://au.archive.ubuntu.com/ubuntu/";
-  debsHash = "sha256-sD5Ckx6O8kaRM+edWRY673sW7A8LXGYjmDbfF0yzR7Y=";
-
-  aptPackages = [
-    "build-essential"
-    "gcc-12"
-    "g++-12"
-    "python3"
-    "openjdk-17-jdk"
-    "openjdk-17-jre"
-    "pypy3"
-  ];
-  aptExtraRepos = [ "universe" ];
-  aptHash = "sha256-RXTCveNEzC0zXnNyVS/i67v3l/aNGtyfpJL4WhESmls=";
-
-  debootstrap = pkgs.debootstrap.overrideAttrs {
-    postInstall = ''
-      substituteInPlace $out/bin/debootstrap \
-        --replace-fail "PATH='" "PATH="$PATH":'"
-    '';
+  # generated via `nix run nixpkgs#nix-prefetch-docker domjudge/judgehost`
+  image = pkgs.dockerTools.pullImage {
+    imageName = "domjudge/judgehost";
+    imageDigest = "sha256:62638543b44a69a00a076c410671768d702f76f4f035d9a58dfb13794a9f0089";
+    sha256 = "sr29ID9XRojQcKuIf0Iztf+QJz/V9BNmiQ2B0XJUmmo=";
+    finalImageName = "domjudge/judgehost";
+    finalImageTag = "latest";
   };
 
-  debootstrap-args = "--variant=minbase ${release} out ${mirror}";
-
-  basedebs = pkgs.runCommand "ubuntu-packages.tar" {
-    nativeBuildInputs = [ debootstrap ];
-    outputHashMode = "flat";
-    outputHashAlgo = "sha256";
-    outputHash = debsHash;
-  } "debootstrap --make-tarball=$out ${debootstrap-args}";
-
-  baserootfs = pkgs.vmTools.runInLinuxVM (
-    pkgs.runCommand "ubuntu-rootfs.tar"
+  rootfs1 =
+    pkgs.runCommand "judgehost-rootfs"
       {
-        nativeBuildInputs = [ debootstrap ];
-        disallowedReferences = [ debootstrap ]; # don't allow references to debootstrap in the output
+        nativeBuildInputs = [ pkgs.undocker ];
       }
       ''
-        debootstrap --unpack-tarball=${basedebs} ${debootstrap-args}
-        rm -r $out out/dev/* # can't copy special devices
-        rm out/var/log/bootstrap.log # has references to the debootstrap store path
-        tar cf $out -C out .
-      ''
-  );
-
-  apt-cache =
-    pkgs.runCommand "ubuntu-apt-cache.tar"
-      {
-        nativeBuildInputs = [ pkgs.bubblewrap ];
-        outputHashMode = "flat";
-        outputHashAlgo = "sha256";
-        outputHash = aptHash;
-      }
-      ''
-        mkdir out
-        tar xf ${baserootfs} -C out
-
-        bwrap \
-          --bind out / \
-          --bind /etc/resolv.conf /etc/resolv.conf \
-          --setenv PATH /bin \
-          bash -c '
-            for repo in ${lib.concatStringsSep " " aptExtraRepos}; do
-              echo "deb ${mirror} ${release} $repo" >> /etc/apt/sources.list
-            done
-            apt-get update
-            apt-get install --download-only -y ${lib.concatStringsSep " " aptPackages}
-          '
-
-        tar cf $out -C out .
+        mkdir $out
+        undocker ${image} - | tar x -C $out --exclude='dev/*'
+        rm $out/etc/{passwd,group,shadow}
       '';
 
-  rootfs = pkgs.vmTools.runInLinuxVM (
-    pkgs.runCommand "ubuntu-rootfs"
-      {
-        memSize = 8 * 1024;
-        nativeBuildInputs = [ pkgs.util-linux ];
+  rootfs2 = "${rootfs1}/chroot/domjudge";
+
+  mkRun =
+    name: rootfs:
+    lib.getExe (pkgs.writeShellApplication {
+      name = "${name}-run";
+      runtimeInputs = [ pkgs.bubblewrap ];
+      text = ''
+        bwrap \
+          --bind ${rootfs} / \
+          --overlay-src /etc --overlay-src ${rootfs}/etc --tmp-overlay /etc \
+          --setenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+          --proc /proc \
+          --dev /dev \
+          --bind /home /home \
+          "$@"
+      '';
+    });
+
+  mkLdso =
+    name: run:
+    pkgs.pkgsStatic.runCommandCC "${name}-ldso" { } ''
+      cat >ldso.c <<EOF
+      #include <unistd.h>
+      #include <errno.h>
+      int main(int argc, char *argv[], char *envp[]) {
+        char **args = malloc(sizeof(char*) * (argc + 2));
+        if (!args) return 12;
+
+        /* duplicate the first arg, shift the rest back */
+        args[0] = argv[0];
+        args[1] = argv[0];
+        for (int i = 0; i < argc; i++) {
+          args[i+1] = argv[i];
+        }
+        args[argc+1] = NULL;
+
+        execve("${run}", args, envp);
+        return errno;
       }
-      ''
-        mkdir out
-        tar xf ${apt-cache} -C out
-
-        mount --bind /proc out/proc
-        mount --bind /dev out/dev
-
-        chroot out /bin/apt install -y ${lib.concatStringsSep " " aptPackages}
-
-        umount out/proc out/dev
-        rm -r out/var/cache/* out/etc/{passwd,shadow,group}
-        cp -r out/* $out
-      ''
-  );
-
-  run = pkgs.writeShellApplication {
-    name = "ubuntu-run";
-    runtimeInputs = [ pkgs.bubblewrap ];
-    text = ''
-      bwrap \
-        --bind ${rootfs} / \
-        --overlay-src /etc --overlay-src ${rootfs}/etc --tmp-overlay /etc \
-        --setenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-        --proc /proc \
-        --dev /dev \
-        --bind /home /home \
-        "$@"
-    '';
-  };
-
-  ldso = pkgs.pkgsStatic.runCommandCC "ubuntu-ldso" { } ''
-    cat >ldso.c <<EOF
-    #include <unistd.h>
-    #include <errno.h>
-    int main(int argc, char *argv[], char *envp[]) {
-      char **args = malloc(sizeof(char*) * (argc + 2));
-      if (!args) return 12;
-
-      /* duplicate the first arg, shift the rest back */
-      args[0] = argv[0];
-      args[1] = argv[0];
-      for (int i = 0; i < argc; i++) {
-        args[i+1] = argv[i];
-      }
-      args[argc+1] = NULL;
-
-      execve("${lib.getExe run}", args, envp);
-      return errno;
-    }
-    EOF
-    $CC -Os ldso.c -o $out
-  '';
-
-  provide =
-    program:
-    pkgs.writeShellScriptBin program ''
-      exec ${lib.getExe run} ${program} "$@"
+      EOF
+      $CC -Os ldso.c -o $out
     '';
 in
 
-run
+let
+  run1 = mkRun "domjudge" rootfs1;
+  run2 = mkRun "domjudge-chroot" rootfs2;
+in
+
+pkgs.runCommand "ubuntu" { } ''
+  mkdir -p $out/bin
+
+  wrap() {
+    echo exec $1 $2 '"$@"' > $out/bin/$2
+    chmod +x $out/bin/$2
+  }
+
+  wrap ${run2} gcc
+  wrap ${run2} cc
+  wrap ${run2} g++
+  wrap ${run2} c++
+
+  wrap ${run2} java
+  wrap ${run2} javac
+
+  wrap ${run2} pypy3
+  wrap ${run1} python3
+''
 // {
-  inherit
-    rootfs
-    basedebs
-    apt-cache
-    ldso
-    provide
-    ;
+  ldso = mkLdso "domjudge-chroot" run2;
 }

@@ -147,46 +147,33 @@
     };
   };
 
-  environment.systemPackages =
-    let
-      ubuntu = flake.packages.${pkgs.system}.ubuntu;
-    in
-    with pkgs;
-    [
-      (writeShellApplication {
-        name = "spsetup";
-        runtimeInputs = [ fzy ];
-        text = builtins.readFile ../../spsetup.sh;
-      })
+  environment.systemPackages = with pkgs; [
+    (writeShellApplication {
+      name = "spsetup";
+      runtimeInputs = [ fzy ];
+      text = builtins.readFile ../../spsetup.sh;
+    })
 
-      hyperfine
-      man-pages
-      p7zip
-      sysstat
-      zip
-      htop
-      btop
-      wget
+    hyperfine
+    man-pages
+    p7zip
+    sysstat
+    zip
+    htop
+    btop
+    wget
 
-      ubuntu
-      (ubuntu.provide "gcc")
-      (ubuntu.provide "g++")
-      (ubuntu.provide "cc")
-      (ubuntu.provide "c++")
-      (ubuntu.provide "javac")
-      (ubuntu.provide "java")
-      (ubuntu.provide "python3")
-      (ubuntu.provide "pypy3")
+    flake.packages.${pkgs.system}.ubuntu
 
-      neovim
-      vim
-      emacs
-      sublime4
-      vscode
-      gedit
-      geany
-      (pkgs.lowPrio python311Full) # includes idle, lower priority so ubuntu python takes precedence
-    ];
+    neovim
+    vim
+    emacs
+    sublime4
+    vscode
+    gedit
+    geany
+    (pkgs.lowPrio python311Full) # includes idle, lower priority so ubuntu python takes precedence
+  ];
 
   environment.ldso = flake.packages.${pkgs.system}.ubuntu.ldso;
 

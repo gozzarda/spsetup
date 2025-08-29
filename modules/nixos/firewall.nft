@@ -31,10 +31,8 @@ table ip filter {
         oifname "lo" counter accept
 
         # sppcontests.org
-        ip daddr 170.64.169.12 tcp dport {http, https} counter accept
-
         # contest.sppcontests.org
-        ip daddr 170.64.253.143 tcp dport {http, https} counter accept
+        ip daddr 172.67.169.156 tcp dport {http, https} counter accept
 
         # backup
         ip daddr 170.64.242.1 tcp dport {http, https} counter accept

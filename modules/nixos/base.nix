@@ -96,8 +96,7 @@
   ];
 
   networking.hosts = {
-    "170.64.169.12" = [ "sppcontests.org" ];
-    "170.64.253.143" = [ "contest.sppcontests.org" ];
+    "172.67.169.156" = [ "sppcontests.org" "contest.sppcontests.org" ];
   };
 
   # common pain point: https://github.com/NixOS/nixpkgs/issues/180175
